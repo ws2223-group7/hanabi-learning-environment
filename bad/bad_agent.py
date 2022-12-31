@@ -16,3 +16,6 @@ class BadAgent(Agent):
         print('reset')
     def act(self, observation):
         print('act')
+
+
+

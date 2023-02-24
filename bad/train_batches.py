@@ -48,7 +48,12 @@ class TrainBatches:
             episode_data_result: CollectEpisodeDataResult = \
                 ce_data.collect() # hier werden die Daten für eine episode gesammelt
 
-            collect_batch_episodes_result.add(episode_data_result)
+            sum_rewards = sum(episode_data_result.buffer.rewards)
+            # selektive Bestimmung von Rewards
+            if  sum_rewards > 5:
+                collect_batch_episodes_result.add(episode_data_result)
+            else:
+                print(f"{sum_rewards}")
 
         return collect_batch_episodes_result
 

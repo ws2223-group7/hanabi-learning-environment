@@ -21,6 +21,8 @@ def main() -> None:
     tf.random.set_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
+    tf.keras.utils.set_random_seed(seed)  # sets seeds for base-python, numpy and tf
+    tf.config.experimental.enable_op_determinism()
 
     batch_size: int = 20
     episodes_running = 100
@@ -42,8 +44,8 @@ def main() -> None:
 
     #network.save()
 
-    self_play = SelfPlay(network)
-    self_play.run(episodes_running)
+    #self_play = SelfPlay(network)
+    #self_play.run(episodes_running)
 
     print("finish with everything")
 if __name__ == "__main__":

@@ -37,10 +37,15 @@ async def main() -> None:
     model_path = 'model'
     players: int = 2
 
+    do_load_and_save_model: bool = False
+
     print(f'welcome to bad agent with tf version: {tf.__version__}')
     print(f'running {episodes_running} episodes')
 
     network: ActionNetwork = ActionNetwork(model_path)
+
+    if do_load_and_save_model && os.path.exists(model_path):
+        network.load()
 
     collected_results: list[CollectEpisodesDataResults] = []
     tasks = []
@@ -80,7 +85,8 @@ async def main() -> None:
         backpropagation.execute(calculation_result)
         print(f"reward: {calculation_result.get_reward_sum() / batch_size}")
 
-    #network.save()
+    if do_load_and_save_model:
+        network.save()
 
     #self_play = SelfPlay(network)
     #self_play.run(episodes_running)

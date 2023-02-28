@@ -3,7 +3,8 @@ class RewardShapeResult:
     """reward shape result"""
     def __init__(self, lost_one_life_token: float, lost_all_life_tokens: float, successfully_played_a_card: float,
                 discard: float, discard_playable: float, discard_unique: float, discard_useless: float,
-                hint: float, play: float
+                hint: float, play: float,
+                is_illegal_nove: float
                  ) -> None:
         """init"""
         self.lost_one_life_token = lost_one_life_token
@@ -15,7 +16,10 @@ class RewardShapeResult:
         self.discard_unseless = discard_useless
         self.hint = hint
         self.play = play
+        self.is_illegal_nove = is_illegal_nove
 
     def get_sum(self) -> float:
         """sum"""
-        return self.lost_all_life_tokens + self.lost_all_life_tokens + self.discard_playable
+        return  self.lost_one_life_token + self.lost_all_life_tokens + self.successfully_played_a_card + \
+                self.discard + self.discard_playable + self.discard_unique + self.discard_unseless + \
+                self.hint + self.play + self.is_illegal_nove

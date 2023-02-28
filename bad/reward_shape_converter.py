@@ -27,6 +27,8 @@ class RewardShapeConverter:
         hint: float = 0.1 if reward_shape.hint is True else 0
         play: float = 0.5 if reward_shape.play is True else 0
 
+        is_illegal_nove = -10 if reward_shape.is_illegal_move is True else 1
+
         return RewardShapeResult(lost_one_life_token= lost_one_life_token,
                                  lost_all_life_tokens= lost_all_life_tokens,
                                  successfully_played_a_card= successfully_played_a_card,
@@ -35,5 +37,6 @@ class RewardShapeConverter:
                                  discard_unique= discard_unique,
                                  discard_useless= discard_useless,
                                  hint= hint,
-                                 play= play
+                                 play= play,
+                                 is_illegal_nove= is_illegal_nove
                                  )

@@ -12,8 +12,9 @@ from hanabi_learning_environment.pyhanabi import HanabiCard, HanabiMove, HanabiM
 from hanabi_learning_environment import rl_env
 
 class RewardShape:
-    '''reward shape'''
+    """""reward shape"""
     def __init__(self) -> None:
+        """init"""
         self.lost_one_life_token: bool = False
         self.lost_all_life_tokens: bool = False
         self.successfully_played_a_card: bool = False
@@ -25,6 +26,8 @@ class RewardShape:
 
         self.play: bool = False
         self.hint: bool = False
+
+        self.is_illegal_move = False
 
     def get_observation_by_state(self, hanabi_state: HanabiState):
         """get observation by state"""
@@ -69,6 +72,7 @@ class RewardShape:
 
         current_life_tokens = int(hanabi_state.life_tokens())
         action_type: HanabiMoveType = next_action.type()
+        self.is_illegal_move = not hanabi_state.move_is_legal(next_action)
 
         self.discard = action_type == HanabiMoveType.DISCARD
         self.play = action_type == HanabiMoveType.PLAY

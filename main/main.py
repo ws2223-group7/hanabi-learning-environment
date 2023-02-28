@@ -19,34 +19,8 @@ from bad.collect_episodes_data_results import CollectEpisodesDataResults
 from bad.rewards_to_go_calculation_result import RewardsToGoCalculationResult
 from bad.backpropagation import BackPropagation
 
-async def main() -> None:
-    '''main'''
-    seed = 42
-    tf.random.set_seed(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-    tf.keras.utils.set_random_seed(seed)  # sets seeds for base-python, numpy and tf
-    tf.config.experimental.enable_op_determinism()
-
-    batch_size: int = 100
-    epoch_size: int = 100
-
-    episodes_running: int = 100
-    gamma: float = 1.0
-
-    model_path = 'model'
-    players: int = 2
-
-    do_load_and_save_model: bool = False
-
-    print(f'welcome to bad agent with tf version: {tf.__version__}')
-    print(f'running {episodes_running} episodes')
-
-    network: ActionNetwork = ActionNetwork(model_path)
-
-    if do_load_and_save_model and os.path.exists(model_path):
-        network.load()
-
+async def learnnig_async(network: ActionNetwork, epoch_size: int, batch_size: int, gamma: float, players: int, do_load_and_save_model: bool) -> None:
+    """learning"""
     collected_results: list[CollectEpisodesDataResults] = []
     tasks = []
 
@@ -87,6 +61,36 @@ async def main() -> None:
 
     if do_load_and_save_model:
         network.save()
+
+async def main() -> None:
+    '''main'''
+    seed = 42
+    tf.random.set_seed(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    tf.keras.utils.set_random_seed(seed)  # sets seeds for base-python, numpy and tf
+    tf.config.experimental.enable_op_determinism()
+
+    batch_size: int = 100
+    epoch_size: int = 100
+
+    episodes_running: int = 100
+    gamma: float = 1.0
+
+    model_path = 'model'
+    players: int = 2
+
+    do_load_and_save_model: bool = False
+
+    print(f'welcome to bad agent with tf version: {tf.__version__}')
+    print(f'running {episodes_running} episodes')
+
+    network: ActionNetwork = ActionNetwork(model_path)
+
+    if do_load_and_save_model and os.path.exists(model_path):
+        network.load()
+
+    await learnnig_async(network, epoch_size, batch_size, gamma, players, do_load_and_save_model)
 
     #self_play = SelfPlay(network)
     #self_play.run(episodes_running)

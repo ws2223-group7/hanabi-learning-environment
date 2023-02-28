@@ -37,8 +37,8 @@ class RewardToGoCalculation:
 
             result.append(action.sampled_action, action.categorical.log_prob(action.sampled_action).numpy(), discounted_reward_to_go, observation)
 
-    def run(self,collected_episode_results: CollectEpisodesDataResults) -> RewardsToGoCalculationResult:
-        '''run'''
+    async def execute_async(self,collected_episode_results: CollectEpisodesDataResults) -> RewardsToGoCalculationResult:
+        """execute"""
 
         episodes_result = RewardsToGoCalculationResult()
 

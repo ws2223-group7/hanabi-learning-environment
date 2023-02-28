@@ -1,5 +1,6 @@
-# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable
+# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable, line-too-long
 
+import asyncio
 import os
 import random
 import sys
@@ -12,9 +13,13 @@ sys.path.append(parentPath)
 
 from bad.self_play import SelfPlay
 from bad.action_network import ActionNetwork
-from bad.train_epoch import TrainEpoch
+from bad.reward_to_go_calculation import RewardToGoCalculation
+from bad.collect_data import CollectData
+from bad.collect_episodes_data_results import CollectEpisodesDataResults
+from bad.rewards_to_go_calculation_result import RewardsToGoCalculationResult
+from bad.backpropagation import BackPropagation
 
-def main() -> None:
+async def main() -> None:
     '''main'''
     seed = 42
     tf.random.set_seed(seed)
@@ -23,39 +28,57 @@ def main() -> None:
     tf.keras.utils.set_random_seed(seed)  # sets seeds for base-python, numpy and tf
     tf.config.experimental.enable_op_determinism()
 
-    batch_size: int = 50
+    batch_size: int = 100
     epoch_size: int = 100
 
     episodes_running: int = 100
     gamma: float = 1.0
 
     model_path = 'model'
-
+    players: int = 2
 
     print(f'welcome to bad agent with tf version: {tf.__version__}')
     print(f'running {episodes_running} episodes')
 
     network: ActionNetwork = ActionNetwork(model_path)
 
-    #if os.path.exists(model_path):
-    #    network.load()
-
-    # losses = np.empty(0, float)
-    # rewards = np.empty(0, float)
-    train_epoch = TrainEpoch(network)
+    collected_results: list[CollectEpisodesDataResults] = []
+    tasks = []
 
     for epoch in range(epoch_size):
         print('')
-        print(f'running epoch: {epoch}')
+        print(f'start running epoch: {epoch}')
+        collect_data = CollectData(network, players)
+        tasks.append(asyncio.create_task(collect_data.execute_async(batch_size, epoch)))
 
-        result = train_epoch.train(batch_size, gamma)
-        print(f"epoch reward: {result.reward}")
+    await asyncio.gather(*tasks)
 
-        #losses = np.append(losses, result.loss)
-        #rewards = np.append(rewards, result.reward)
+    print('finished all running epochs')
 
-        #print(f"mean reward: {rewards.mean()}")
-        #print(f"mean loss: {losses.mean()}")
+    for task in tasks:
+        collected_results.append(task.result())
+
+    print('start calculating results')
+
+    calculation_results: list[RewardsToGoCalculationResult] = []
+    tasks = []
+    for collected_data in collected_results:
+        reward_to_go_calculation = RewardToGoCalculation(gamma)
+        tasks.append(asyncio.create_task(reward_to_go_calculation.execute_async(collected_data)))
+
+    await asyncio.gather(*tasks)
+
+    print('finished calculating results')
+
+    for task in tasks:
+        calculation_results.append(task.result())
+
+    print('running backpropagation')
+
+    for calculation_result in calculation_results:
+        backpropagation = BackPropagation(network)
+        backpropagation.execute(calculation_result)
+        print(f"reward: {calculation_result.get_reward_sum() / batch_size}")
 
     #network.save()
 
@@ -64,4 +87,4 @@ def main() -> None:
 
     print("finish with everything")
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

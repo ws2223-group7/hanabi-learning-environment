@@ -50,8 +50,7 @@ class CollectEpisodeData:
             observation = observation_converter.convert(observation_after_step)
             self.hanabi_observation = observation_after_step
 
-    def collect(self) \
-         -> CollectEpisodeDataResult:
+    def collect(self) -> CollectEpisodeDataResult:
         '''train within an environment'''
 
         copied_state = self.hanabi_environment.state.copy()

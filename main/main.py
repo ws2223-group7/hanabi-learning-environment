@@ -44,7 +44,7 @@ async def main() -> None:
 
     network: ActionNetwork = ActionNetwork(model_path)
 
-    if do_load_and_save_model && os.path.exists(model_path):
+    if do_load_and_save_model and os.path.exists(model_path):
         network.load()
 
     collected_results: list[CollectEpisodesDataResults] = []

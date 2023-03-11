@@ -1,4 +1,4 @@
-#pylint: disable=wrong-import-position, import-error, invalid-name, logging-fstring-interpolation
+#pylint: disable=wrong-import-position, import-error, invalid-name, logging-fstring-interpolation, missing-module-docstring
 
 import logging
 import re

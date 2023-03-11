@@ -18,4 +18,5 @@ class RewardShapeResult:
 
     def get_sum(self) -> float:
         """sum"""
-        return self.lost_all_life_tokens + self.lost_all_life_tokens + self.discard_playable
+        return self.lost_one_life_token + self.lost_all_life_tokens + self.successfully_played_a_card + \
+        self.discard + self.discard_playable + self.discard_unique + self.discard_unseless + self.hint + self.play

@@ -10,4 +10,4 @@ models_with_reward_shaping/*
 models_without_reward_shaping/*
 log_reward_shaping.txt
 log_no_reward_shaping.txt
-diagramms/*
+diagramms/

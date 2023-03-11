@@ -18,6 +18,7 @@ from bad.set_extra_observation import SetExtraObservation
 from bad.reward_to_go_calculation import RewardToGoCalculation
 from bad.train_batch_result import TrainBatchResult
 from bad.rewards_to_go_calculation_result import RewardsToGoCalculationResult
+from bad.bad_setting import BadSetting
 class TrainBatches:
     """train batch"""
     def __init__(self, network: ActionNetwork, hanabi_environment: rl_env.HanabiEnv, players: int) -> None:
@@ -51,9 +52,9 @@ class TrainBatches:
 
         return collect_batch_result
 
-    def calculation(self, collected_data: CollectBatchResults, gamma: float) -> RewardsToGoCalculationResult:
+    def calculation(self, collected_data: CollectBatchResults, bad_setting: BadSetting) -> RewardsToGoCalculationResult:
         '''reward to go calculation'''
-        reward_to_go_calculation = RewardToGoCalculation(gamma)
+        reward_to_go_calculation = RewardToGoCalculation(bad_setting)
         return reward_to_go_calculation.execute(collected_data)
 
     def backpropagation(self, calc_result: RewardsToGoCalculationResult) -> float:
@@ -72,15 +73,15 @@ class TrainBatches:
 
         return self.network.backpropagation(observation_array_array, actions, rewards_to_go, baseline)
 
-    def run(self, batch_size: int, gamma: float) -> TrainBatchResult:
+    def run(self, bad_setting: BadSetting) -> TrainBatchResult:
         '''init'''
         print('training')
 
         print('collecting data')
-        collected_data = self.collect_data(batch_size)
+        collected_data = self.collect_data(bad_setting.batch_size)
 
         print('reward calculation')
-        calculation_result = self.calculation(collected_data, gamma)
+        calculation_result = self.calculation(collected_data, bad_setting)
 
         print('backpropagation')
         loss = self.backpropagation(calculation_result)

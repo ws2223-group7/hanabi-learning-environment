@@ -40,7 +40,8 @@ class CollectEpisodeData:
         done = False
         while not done:
             legal_moves = self.hanabi_environment.state.legal_moves_int()
-            bad = self.network.get_action(observation, legal_moves)
+            max_moves = self.hanabi_environment.game.max_moves()
+            bad = self.network.get_action(observation, legal_moves, max_moves)
             bad_result = bad.sample_action()
             next_action = bad_result.sampled_action
             hanabi_move = self.hanabi_environment.game.get_move(next_action)

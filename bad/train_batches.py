@@ -48,6 +48,15 @@ class TrainBatches:
 
             collect_batch_result.add(game_result)
 
+            # alternative
+            #game_reward_sum = sum(game_result.buffer.rewards)
+
+            #if  game_reward_sum >= 5:
+            #    print(f'collect batch result: {game_reward_sum}')
+            #    collect_batch_result.add(game_result)
+            #else:
+            #    print('skip batch result')
+
             #print(f"collected episoden aktionen: {collect_batch_episodes_result.get_batch_size()} von batch size {batch_size}")
 
         return collect_batch_result

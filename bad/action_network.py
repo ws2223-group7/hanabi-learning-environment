@@ -96,7 +96,9 @@ class ActionNetwork(ActionProvider):
         result_list = result.numpy()[0].tolist()
         result_filtered = [elem_in_res if (elem_idx in legal_moves_as_int) else 0
                            for elem_idx, elem_in_res in enumerate(result_list)]
-        return BayesianAction(np.array(result_filtered))
+
+        result_filtered_filtered = result_filtered[:20]
+        return BayesianAction(np.array(result_filtered_filtered))
 
     def backpropagation(self, observation, actions: np.ndarray, rewards_to_go: np.ndarray, baseline: Baseline) -> float:
         """train step"""

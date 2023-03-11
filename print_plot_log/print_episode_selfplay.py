@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, wrong-import-position, no-member, no-name-in-module, too-few-public-methods
+# pylint: disable=missing-module-docstring, wrong-import-position, import-error
 import sys
 import os
 

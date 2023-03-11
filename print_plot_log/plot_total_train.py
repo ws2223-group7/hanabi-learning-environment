@@ -1,3 +1,4 @@
+#pylint: disable=missing-module-docstring, wrong-import-position, import-error
 import os
 import sys
 

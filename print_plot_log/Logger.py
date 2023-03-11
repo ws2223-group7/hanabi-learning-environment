@@ -1,3 +1,5 @@
+#pylint: disable=wrong-import-position, import-error, invalid-name, logging-fstring-interpolation
+
 import logging
 import re
 import os
@@ -9,15 +11,16 @@ sys.path.append(parentPath)
 
 from print_plot_log.helpfunction import read_epoch_number
 
-
 class Logger:
     'Logger'
+
     def __init__(self, modelpath, level=logging.DEBUG):
         'Init Logger'
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(level)
         self.modelpath = modelpath
-        self.filename = 'log_reward_shaping.txt' if modelpath == 'models_with_reward_shaping' else 'log_no_reward_shaping.txt'
+        self.filename = 'log_reward_shaping.txt' \
+            if modelpath == 'models_with_reward_shaping' else 'log_no_reward_shaping.txt'
         handler = logging.FileHandler(self.filename)
         handler.setLevel(level)
 
@@ -31,7 +34,7 @@ class Logger:
 
     def get_reward_for_epoch(self, episode):
         'Get Reward for Epoch'
-        with open(self.filename, 'r') as file:
+        with open(self.filename, encoding="utf-8") as file:
             for line in file:
                 match = re.match(r'^Rewards in Epoch (\d+): ([\d\.]+)$', line)
                 if match:
@@ -43,7 +46,7 @@ class Logger:
     def get_all_rewards(self):
         'Get All Rewards'
         rewards = []
-        with open(self.filename, 'r') as file:
+        with open(self.filename, encoding="utf-8") as file:
             for line in file:
                 match = re.match(r'^Rewards in Epoch \d+: ([\d\.]+)$', line)
                 if match:

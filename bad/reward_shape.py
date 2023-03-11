@@ -84,5 +84,5 @@ class RewardShape:
         next_life_tokens = int(hanabi_state.life_tokens())
 
         self.lost_one_life_token = current_life_tokens != next_life_tokens
-        self.lost_all_life_tokens = current_life_tokens <= 0
+        self.lost_all_life_tokens = next_life_tokens <= 0
         self.successfully_played_a_card = not self.lost_all_life_tokens

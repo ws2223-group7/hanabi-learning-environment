@@ -2,7 +2,6 @@
 
 import string
 import numpy as np
-import tensorflow as tf
 
 
 class ColorToIntConverter:
@@ -14,8 +13,7 @@ class ColorToIntConverter:
 
     def convert(self, col: string) -> np.ndarray:
         '''convert'''
-        return tf.keras.utils.to_categorical(self.convert_color_to_int(col), num_classes=6, \
-            dtype=int)
+        return np.eye(6)[self.convert_color_to_int(col)] 
 
     def convert_color_to_int(self, col: string) -> int:
         '''convert color to int'''

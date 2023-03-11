@@ -2,7 +2,6 @@
 import sys
 import os
 import numpy as np
-import tensorflow as tf
 
 currentPath = os.path.dirname(os.path.realpath(__file__))
 parentPath = os.path.dirname(currentPath)
@@ -30,20 +29,20 @@ class PublicFeatures:
     def convert_life_tokens(self) -> np.ndarray:
         ''' convert life tokens '''
         life_tokens = self.observation['player_observations'][self.curr_player]['life_tokens']
-        return tf.keras.utils.to_categorical(life_tokens, num_classes=16, dtype=int)
+        return np.eye(16)[life_tokens]  
 
     def convert_information_tokens(self) -> np.ndarray:
         ''' convert information tokens '''
         in_to = self.observation['player_observations'][self.curr_player]['information_tokens']
-        return tf.keras.utils.to_categorical(in_to, num_classes=16, dtype=int)
-
+        return np.eye(16)[in_to] 
+        
     def convert_current_player(self) -> np.ndarray:
         '''converts current player'''
-        return tf.keras.utils.to_categorical(self.curr_player, num_classes=2, dtype=int)
+        return np.eye(2)[self.curr_player]
 
     def convert_last_action(self) -> np.ndarray:
         '''convert last action'''
         max_action: int = self.observation['max_action']
         last_action: int = self.observation['last_action']
-
-        return tf.keras.utils.to_categorical(last_action, num_classes=max_action, dtype=int)
+        # print(last_action)
+        return np.eye(max_action)[last_action]

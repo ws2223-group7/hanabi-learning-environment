@@ -3,7 +3,7 @@ import os
 import random
 import sys
 import numpy as np
-import tensorflow as tf
+import torch
 
 currentPath = os.path.dirname(os.path.realpath(__file__))
 parentPath = os.path.dirname(currentPath)
@@ -18,14 +18,13 @@ from bad.constants import Constants
 def main() -> None:
     '''main'''
     seed = 42
-    tf.random.set_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
-    tf.keras.utils.set_random_seed(seed)  # sets seeds for base-python, numpy and tf
-    tf.config.experimental.enable_op_determinism()
+    torch.manual_seed(seed)
+    torch.use_deterministic_algorithms(True)
 
     batch_size: int = 1000
-    epoch_size: int = 1
+    epoch_size: int = 10
 
     episodes_running: int = 10
     gamma: float = 1.0
@@ -33,7 +32,6 @@ def main() -> None:
     model_path = 'model'
 
 
-    print(f'welcome to bad agent with tf version: {tf.__version__}')
     print(f'running {episodes_running} episodes')
 
     constants = Constants()
@@ -47,11 +45,14 @@ def main() -> None:
     train_epoch = TrainEpoch(network, hanabi_environment, players)
 
     for epoch in range(epoch_size):
-        print('')
-        print(f'running epoch: {epoch}')
+        try:
+            print('')
+            print(f'running epoch: {epoch}')
 
-        result = train_epoch.train(batch_size, gamma)
-        print(f"epoch reward: {result.reward / result.games_played}")
+            result = train_epoch.train(batch_size, gamma)
+            print(f"epoch reward: {result.reward / result.games_played}")
+        except Exception as ex:
+            print(ex)
 
     #network.save()
 

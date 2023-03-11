@@ -1,6 +1,5 @@
 # pylint: disable=missing-module-docstring, wrong-import-position, too-few-public-methods
 import numpy as np
-import tensorflow as tf
 
 class LegalActions:
     '''legal moves'''
@@ -16,6 +15,6 @@ class LegalActions:
     def get_encoded_action_exists(self, exists: bool) -> np.ndarray:
         '''get encoded action exists'''
         if exists:
-            return tf.keras.utils.to_categorical(1, num_classes=2, dtype=int)
+            return np.eye(2)[1] 
 
-        return tf.keras.utils.to_categorical(0, num_classes=2, dtype=int)
+        return np.eye(2)[0]

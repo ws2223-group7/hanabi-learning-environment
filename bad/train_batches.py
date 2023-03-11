@@ -4,6 +4,11 @@ import sys
 import os
 import numpy as np
 
+import torch
+import torch.nn as nn
+from torch.distributions.categorical import Categorical
+from torch.optim import Adam
+
 currentPath = os.path.dirname(os.path.realpath(__file__))
 parentPath = os.path.dirname(currentPath)
 sys.path.append(parentPath)

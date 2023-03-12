@@ -27,7 +27,7 @@ class TrainBatches:
         self.hanabi_environment = hanabi_environment
         self.players = players
 
-    def collect_data(self, batch_size:int) -> CollectBatchResults:
+    def collect_data(self, batch_size:int, reward_threshold: int) -> CollectBatchResults:
         """collect data"""
         collect_batch_result = CollectBatchResults()
 
@@ -46,16 +46,14 @@ class TrainBatches:
             ce_data = CollectEpisodeData(hanabi_observation, self.hanabi_environment, self.network)
             game_result: CollectGameResult = ce_data.collect() # hier werden die Daten für eine episode gesammelt
 
-            collect_batch_result.add(game_result)
-
             # alternative
-            #game_reward_sum = sum(game_result.buffer.rewards)
+            game_reward_sum = sum(game_result.buffer.rewards)
 
-            #if  game_reward_sum >= 5:
-            #    print(f'collect batch result: {game_reward_sum}')
-            #    collect_batch_result.add(game_result)
-            #else:
-            #    print('skip batch result')
+            if  game_reward_sum >= reward_threshold:
+                #print(f'collect batch result: {game_reward_sum}')
+                collect_batch_result.add(game_result)
+            else:
+                print('skip batch result')
 
             #print(f"collected episoden aktionen: {collect_batch_episodes_result.get_batch_size()} von batch size {batch_size}")
 
@@ -64,7 +62,7 @@ class TrainBatches:
     def calculation(self, collected_data: CollectBatchResults, bad_setting: BadSetting) -> RewardsToGoCalculationResult:
         '''reward to go calculation'''
         reward_to_go_calculation = RewardToGoCalculation(bad_setting)
-        return reward_to_go_calculation.execute(collected_data)
+        return reward_to_go_calculation.execute(collected_data, bad_setting.rewardshape_setting)
 
     def backpropagation(self, calc_result: RewardsToGoCalculationResult) -> float:
         '''backpropagation'''
@@ -87,7 +85,7 @@ class TrainBatches:
         print('training')
 
         print('collecting data')
-        collected_data = self.collect_data(bad_setting.batch_size)
+        collected_data = self.collect_data(bad_setting.batch_size, bad_setting.reward_threshold)
 
         print('reward calculation')
         calculation_result = self.calculation(collected_data, bad_setting)

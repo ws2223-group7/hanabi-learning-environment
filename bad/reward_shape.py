@@ -73,6 +73,7 @@ class RewardShape:
         self.discard = action_type == HanabiMoveType.DISCARD
         self.play = action_type == HanabiMoveType.PLAY
         self.hint = action_type == HanabiMoveType.REVEAL_COLOR | HanabiMoveType.REVEAL_RANK
+        fireworks_bofore_move = hanabi_state.fireworks()
 
         if action_type == HanabiMoveType.DISCARD:
             self.discard_playable = self.is_discard_playable(next_action, hanabi_state)
@@ -83,6 +84,8 @@ class RewardShape:
 
         next_life_tokens = int(hanabi_state.life_tokens())
 
+        fireworks_after_move = hanabi_state.fireworks()
+
         self.lost_one_life_token = current_life_tokens != next_life_tokens
         self.lost_all_life_tokens = next_life_tokens <= 0
-        self.successfully_played_a_card = not self.lost_all_life_tokens
+        self.successfully_played_a_card = sum(fireworks_after_move) > sum(fireworks_bofore_move)

@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable, line-too-long, ungrouped-imports, too-many-locals, invalid-name
+# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable, line-too-long, ungrouped-imports, too-many-locals, invalid-name, too-many-instance-attributes, too-many-arguments, too-few-public-methods
 
 class RewardShapeSetting:
     """reward shape setting"""

@@ -26,22 +26,3 @@ class BayesianAction:
         sampled_action:int = int(all_action_probs_distribution.sample().numpy())
         return BayesianActionResult(sampled_action)
 
-    def get_action(self, legal_moves:np.ndarray) -> BayesianActionResult:
-        '''returns a choice'''
-        legal_actions_int = legal_moves.tolist()
-        all_action_probs = self.actions.copy()
-
-        if len(legal_actions_int) == len(all_action_probs):
-            raise Exception('no legal moves left')
-
-        all_action_probs_distribution = tfp.distributions.Categorical(probs=all_action_probs)
-        probs_distribution_as_numpy = all_action_probs_distribution.probs.numpy()
-        done = False
-        sampled_action:int = 0
-        while not done:
-            sampled_action = int(np.argmax(probs_distribution_as_numpy, axis=0))
-            done: bool = legal_actions_int.count(sampled_action) > 0
-            if not done:
-                probs_distribution_as_numpy[sampled_action] = -float('inf')
-
-        return BayesianActionResult(sampled_action)

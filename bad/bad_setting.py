@@ -12,7 +12,7 @@ from bad.rewardshape_setting import RewardShapeSetting
 
 class BadSetting:
     """bad setting"""
-    def __init__(self, with_reward_shaping: bool, batch_size:int, epoch_size: int, gamma:float, learning_rate: float, rewardshape_setting: RewardShapeSetting) -> None:
+    def __init__(self, with_reward_shaping: bool, batch_size:int, epoch_size: int, gamma:float, learning_rate: float, rewardshape_setting: RewardShapeSetting, reward_threshold:int) -> None:
         """init"""
         self.epoch_size = epoch_size
         self.with_reward_shaping = with_reward_shaping
@@ -20,3 +20,4 @@ class BadSetting:
         self.gamma: float = gamma
         self.learning_rate = learning_rate
         self.rewardshape_setting = rewardshape_setting
+        self.reward_threshold = reward_threshold

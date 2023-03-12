@@ -75,8 +75,12 @@ def main() -> None:
 
     rewardshape_setting = get_punishment_rewardshape_setting()
 
-    bad_setting = BadSetting(batch_size=1000, epoch_size=2,
-                             gamma=1.0, learning_rate=0.0001, with_reward_shaping=True,
+    bad_setting = BadSetting(
+                             batch_size=1000, 
+                             epoch_size=2,
+                             gamma=1.0, 
+                             learning_rate=0.0001, with_reward_shaping=True,
+                             reward_threshold=0,
                              rewardshape_setting= rewardshape_setting
                              )
 

@@ -41,6 +41,28 @@ def get_punishment_rewardshape_setting() -> RewardShapeSetting:
                                 play_false= 0
                                 )
 
+def get_playwith_risk_of_punishment_rewardshape_setting() -> RewardShapeSetting:
+    """get setting for punishement"""
+    return RewardShapeSetting(  lost_one_life_token_true=0,
+                                lost_one_life_token_false=0,
+                                lost_all_life_tokens_true= -50,
+                                lost_all_life_tokens_false= 0,
+                                successfully_played_a_card_true = 50,
+                                successfully_played_a_card_false = 0,
+                                discard_true = 0,
+                                discard_false = 0,
+                                discard_playable_true = 0,
+                                discard_playable_false = 0,
+                                discard_unique_true = 0,
+                                discard_unique_false = 0,
+                                discard_useless_true = 0,
+                                discard_useless_false = 0,
+                                hint_true= 0,
+                                hint_false= 0,
+                                play_true= 0,
+                                play_false= 0
+                                )
+
 def main() -> None:
     '''main'''
     seed = 42

@@ -1,4 +1,4 @@
-#pylint: disable=wrong-import-position, import-error, invalid-name, logging-fstring-interpolation
+#pylint: disable=wrong-import-position, import-error, invalid-name, logging-fstring-interpolation, missing-module-docstring, broad-exception-raised
 
 import logging
 import re
@@ -42,7 +42,7 @@ class Logger:
                     reward = float(match.group(2))
                     if epoch == episode:
                         return reward
-
+        raise Exception('no reward for epoch')
     def get_all_rewards(self):
         'Get All Rewards'
         rewards = []

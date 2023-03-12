@@ -31,9 +31,6 @@ class BayesianAction:
         legal_actions_int = legal_moves.tolist()
         all_action_probs = self.actions.copy()
 
-        if len(legal_actions_int) == len(all_action_probs):
-            raise Exception('no legal moves left')
-
         all_action_probs_distribution = tfp.distributions.Categorical(probs=all_action_probs)
         probs_distribution_as_numpy = all_action_probs_distribution.probs.numpy()
         done = False

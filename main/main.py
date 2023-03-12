@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable, line-too-long, ungrouped-imports
+# pylint: disable=missing-module-docstring, wrong-import-position, no-name-in-module, unused-variable, unused-variable, line-too-long, ungrouped-imports, too-many-locals, invalid-name, broad-exception-caught
 import os
 import random
 import sys
@@ -55,15 +55,18 @@ def main() -> None:
     result_training = []
 
     for epoch in range(bad_setting.epoch_size):
-        print('')
-        print(f'running epoch: {epoch+last_epoch_number+1}')
+        try:
+            print('')
+            print(f'running epoch: {epoch+last_epoch_number+1}')
 
-        result = train_epoch.train(bad_setting)
-        avg_reward = result.reward / result.games_played
-        logger.log_reward(avg_reward)
+            result = train_epoch.train(bad_setting)
+            avg_reward = result.reward / result.games_played
+            logger.log_reward(avg_reward)
 
-        print(f"epoch reward: {avg_reward}")
-        network.save()
+            print(f"epoch reward: {avg_reward}")
+            network.save()
+        except Exception as ex:
+            print(ex)
 
     train_plot = PlotTraining()
     train_plot.plot_reward(bad_setting.with_reward_shaping)

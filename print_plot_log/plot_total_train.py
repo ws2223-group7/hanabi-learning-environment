@@ -1,4 +1,4 @@
-#pylint: disable=missing-module-docstring, wrong-import-position, import-error
+#pylint: disable=missing-module-docstring, wrong-import-position, import-error, unnecessary-comprehension
 import os
 import sys
 
@@ -29,11 +29,15 @@ class PlotTraining:
         results = logger.get_all_rewards()
         x_axis = [x for x in range(len(results))]
 
+        directory = 'diagramms'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
         plt.ylabel('Rewards  pro Epoche')
         plt.xlabel('Epoche')
         plt.title('Rewards during Training')
         plt.plot(x_axis, results)
-        plt.savefig('diagramms/Train.png')
+        plt.savefig(f'{directory}/Train.png')
 
     def plot_reward_shaping_vs_no_reward_shaping(self):
         """Plot the reward of the model with reward shaping 

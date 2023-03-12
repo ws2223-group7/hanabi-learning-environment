@@ -1,4 +1,4 @@
-#pylint: disable=missing-module-docstring
+#pylint: disable=missing-module-docstring, too-many-arguments, unnecessary-comprehension
 import matplotlib.pyplot as plt
 
 

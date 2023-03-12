@@ -22,5 +22,5 @@ class TrainEpoch:
 
     def train(self, bad_setting:BadSetting) -> TrainEpochResult:
         """train"""
-        result = self.train_batches.run(batch_size=bad_setting.batch_size, gamma=bad_setting.gamma)
+        result = self.train_batches.run(bad_setting)
         return TrainEpochResult(result.loss, result.game_reward, result.games_played)

@@ -15,6 +15,7 @@ from bad.encoding.observation import Observation
 class ActionProvider(ABC):
     """action provider"""
     def get_action(self, observation: Observation, legal_moves_as_int: list, \
+                   max_moves: int, \
                    public_belief = None) -> BayesianAction:
         """get action"""
         raise NotImplementedError("Please Implement this method")

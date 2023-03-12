@@ -13,11 +13,13 @@ from bad.rewards_to_go_episode_calculation_result import RewardsCalculationResul
 from bad.rewards_to_go_calculation_result import RewardsToGoCalculationResult
 from bad.reward_shape_converter import RewardShapeConverter
 from bad.game_buffer import GameBuffer
+from bad.bad_setting import BadSetting
 
 class RewardToGoCalculation:
     ''''calculate reward to go'''
-    def __init__(self, gamma: float) -> None:
-        self.gamma = gamma
+    def __init__(self, bad_setting: BadSetting) -> None:
+        self.gamma = bad_setting.gamma
+        self.with_reward_shaping = bad_setting.with_reward_shaping
 
     def calculate(self, buffer: GameBuffer, result: RewardsCalculationResult) -> None:
         ''''calculate episode'''
@@ -32,7 +34,7 @@ class RewardToGoCalculation:
 
             reward_shaping_array = np.empty(len(buffer.bayesian_actions) - index)
             reward_shaping_array.fill(reward_vom_reward_shaping)
-            reward_vom_reward_shaping_to_go = reward_shaping_array.sum()
+            reward_vom_reward_shaping_to_go = reward_shaping_array.sum() if self.with_reward_shaping is True else 0
 
             reward_to_go = reward_to_go_vom_hanabi_framework
             discounted_reward_to_go = (reward_to_go +reward_vom_reward_shaping_to_go) * np.power(self.gamma, index + 1)

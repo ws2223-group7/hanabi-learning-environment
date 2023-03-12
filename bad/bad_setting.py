@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring, wrong-import-position, ungrouped-imports, too-few-public-methods, consider-using-enumerate, line-too-long, line-too-long, too-many-function-args
+# pylint: disable=missing-module-docstring, wrong-import-position, ungrouped-imports, too-few-public-methods, consider-using-enumerate, line-too-long, line-too-long, too-many-function-args, too-many-arguments
 
 class BadSetting:
     """bad setting"""

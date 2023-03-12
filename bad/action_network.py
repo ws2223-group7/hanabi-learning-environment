@@ -90,13 +90,16 @@ class ActionNetwork(ActionProvider):
         return reshaped
 
     def get_action(self, observation: Observation, legal_moves_as_int: list, \
+                   max_moves: int, \
                    public_belief = None) -> BayesianAction:
         '''get action'''
         result = self.model(self.get_model_input(observation, public_belief))
         result_list = result.numpy()[0].tolist()
         result_filtered = [elem_in_res if (elem_idx in legal_moves_as_int) else 0
                            for elem_idx, elem_in_res in enumerate(result_list)]
-        return BayesianAction(np.array(result_filtered))
+
+        result_filtered_filtered = result_filtered[:max_moves]
+        return BayesianAction(np.array(result_filtered_filtered))
 
     def backpropagation(self, observation, actions: np.ndarray, rewards_to_go: np.ndarray, baseline: Baseline) -> float:
         """train step"""

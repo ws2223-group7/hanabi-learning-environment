@@ -14,6 +14,8 @@ from bad.rewards_to_go_calculation_result import RewardsToGoCalculationResult
 from bad.reward_shape_converter import RewardShapeConverter
 from bad.game_buffer import GameBuffer
 from bad.bad_setting import BadSetting
+from bad.rewardshape_setting import RewardShapeSetting
+
 
 class RewardToGoCalculation:
     ''''calculate reward to go'''
@@ -21,13 +23,13 @@ class RewardToGoCalculation:
         self.gamma = bad_setting.gamma
         self.with_reward_shaping = bad_setting.with_reward_shaping
 
-    def calculate(self, buffer: GameBuffer, result: RewardsCalculationResult) -> None:
+    def calculate(self, buffer: GameBuffer, result: RewardsCalculationResult, rewardshape_setting: RewardShapeSetting) -> None:
         ''''calculate episode'''
 
         reward_shape_converter = RewardShapeConverter()
 
         for index in range(len(buffer.bayesian_actions)): # über jede aktion (pro spiel)
-            reward_shape = reward_shape_converter.convert(buffer.reward_shapes[index])
+            reward_shape = reward_shape_converter.convert(buffer.reward_shapes[index], rewardshape_setting)
             # hier rewards verändern
             reward_to_go_vom_hanabi_framework = float(np.sum(buffer.rewards[index:]))
             reward_vom_reward_shaping = reward_shape.get_sum()
@@ -46,7 +48,7 @@ class RewardToGoCalculation:
 
             result.append(bayesian_actions.sampled_action, discounted_reward_to_go, reward_vom_hanabi_framework, observation)
 
-    def execute(self,collected_batch_results: CollectBatchResults) -> RewardsToGoCalculationResult:
+    def execute(self,collected_batch_results: CollectBatchResults, rewardshape_setting: RewardShapeSetting) -> RewardsToGoCalculationResult:
         """execute"""
         episodes_result = RewardsToGoCalculationResult(collected_batch_results.get_games_played())
 
@@ -55,6 +57,6 @@ class RewardToGoCalculation:
             episodes_result.append(reward_calculation_result)
 
             buffer = batch_result.buffer
-            self.calculate(buffer, reward_calculation_result)
+            self.calculate(buffer, reward_calculation_result, rewardshape_setting)
 
         return episodes_result

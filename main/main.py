@@ -17,6 +17,29 @@ from bad.train_epoch import TrainEpoch
 from bad.self_play import SelfPlay
 from bad.action_network import ActionNetwork
 from hanabi_learning_environment import pyhanabi, rl_env
+from bad.rewardshape_setting import RewardShapeSetting
+
+def get_punishment_rewardshape_setting() -> RewardShapeSetting:
+    """get setting for punishement"""
+    return RewardShapeSetting(  lost_one_life_token_true=0,
+                                lost_one_life_token_false=0,
+                                lost_all_life_tokens_true= -50,
+                                lost_all_life_tokens_false= 0,
+                                successfully_played_a_card_true = 0,
+                                successfully_played_a_card_false = 0,
+                                discard_true = 0,
+                                discard_false = 0,
+                                discard_playable_true = 0,
+                                discard_playable_false = 0,
+                                discard_unique_true = 0,
+                                discard_unique_false = 0,
+                                discard_useless_true = 0,
+                                discard_useless_false = 0,
+                                hint_true= 0,
+                                hint_false= 0,
+                                play_true= 0,
+                                play_false= 0
+                                )
 
 def main() -> None:
     '''main'''
@@ -28,8 +51,12 @@ def main() -> None:
     tf.keras.utils.set_random_seed(seed)
     tf.config.experimental.enable_op_determinism()
 
+    rewardshape_setting = get_punishment_rewardshape_setting()
+
     bad_setting = BadSetting(batch_size=1000, epoch_size=2,
-                             gamma=1.0, learning_rate=0.0001, with_reward_shaping=True)
+                             gamma=1.0, learning_rate=0.0001, with_reward_shaping=True, 
+                             rewardshape_setting= rewardshape_setting
+                             )
 
     episodes_running: int = 100
     model_path = 'models_with_reward_shaping' if bad_setting.with_reward_shaping is True else 'models_without_reward_shaping'
